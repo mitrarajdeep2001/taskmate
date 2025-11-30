@@ -60,6 +60,7 @@ services:
       - ./docker/createbuckets-entrypoint.sh:/scripts/createbuckets-entrypoint.sh:ro
     networks:
       - worklenz
+
   db:
     image: postgres:15
     container_name: worklenz_db
@@ -99,6 +100,7 @@ services:
         source: ./pg_backups
         target: /docker-entrypoint-initdb.d/pg_backups
     command: ["/usr/local/bin/db-init-wrapper.sh"]
+
   db-backup:
     image: postgres:15
     container_name: worklenz_db_backup
@@ -123,10 +125,28 @@ services:
     networks:
       - worklenz
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: worklenz_pgadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"                     # host:container -> access pgAdmin at http://localhost:8080
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@gmail.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin@123}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - worklenz
+
 volumes:
   worklenz_postgres_data:
   worklenz_minio_data:
   pgdata:
+  pgadmin_data:
 
 networks:
   worklenz:

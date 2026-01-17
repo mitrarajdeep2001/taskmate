@@ -10,7 +10,7 @@ services:
       - backend
     restart: unless-stopped
     env_file:
-      - ./worklenz-frontend/.env.production
+      - ./worklenz-frontend/.env.development
     networks:
       - worklenz
 
@@ -64,6 +64,8 @@ services:
   db:
     image: postgres:15
     container_name: worklenz_db
+    ports:
+    - "5432:5432"                   # host:container
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_DB: ${DB_NAME:-worklenz_db}

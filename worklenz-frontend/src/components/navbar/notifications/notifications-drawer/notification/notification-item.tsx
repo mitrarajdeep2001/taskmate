@@ -79,7 +79,7 @@ const NotificationItem = ({
         cursor: notification.url ? 'pointer' : 'default',
       }}
       onClick={handleNotificationClick}
-      className="ant-notification-notice worklenz-notification rounded-4"
+      className="ant-notification-notice taskmate-notification rounded-4"
     >
       <div className="ant-notification-notice-content">
         <div className="ant-notification-notice-description">

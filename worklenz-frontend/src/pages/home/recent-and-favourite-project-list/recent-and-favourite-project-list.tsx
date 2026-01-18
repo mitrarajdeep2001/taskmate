@@ -78,7 +78,7 @@ const RecentAndFavouriteProjectList = () => {
             key={record.id}
             style={{ margin: 0, paddingInlineEnd: 6, cursor: 'pointer' }}
             onClick={() =>
-              navigate(`/worklenz/projects/${record.id}?tab=tasks-list&pinned_tab=tasks-list`)
+              navigate(`/taskmate/projects/${record.id}?tab=tasks-list&pinned_tab=tasks-list`)
             }
           >
             <Badge color={record.color_code} style={{ marginInlineEnd: 4 }} />
@@ -134,7 +134,7 @@ const RecentAndFavouriteProjectList = () => {
       <div style={{ maxHeight: 420, overflow: 'auto' }}>
         {projectsData?.body?.length === 0 ? (
           <Empty
-            image="https://s3.us-west-2.amazonaws.com/worklenz.com/assets/empty-box.webp"
+            image="https://s3.us-west-2.amazonaws.com/taskmate.com/assets/empty-box.webp"
             imageStyle={{ height: 60 }}
             style={{
               display: 'flex',

@@ -52,7 +52,7 @@ export const AdminGuard = memo(({ children }: GuardProps) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/worklenz/unauthorized" />;
+    return <Navigate to="/taskmate/unauthorized" />;
   }
 
   return <>{children}</>;
@@ -64,8 +64,8 @@ export const LicenseExpiryGuard = memo(({ children }: GuardProps) => {
   const { isLicenseExpired, location } = useAuthStatus();
   const authService = useAuthService();
 
-  const isAdminCenterRoute = location.pathname.includes('/worklenz/admin-center');
-  const isAccountDeletionRoute = location.pathname.includes('/worklenz/settings/account-deletion');
+  const isAdminCenterRoute = location.pathname.includes('/taskmate/admin-center');
+  const isAccountDeletionRoute = location.pathname.includes('/taskmate/settings/account-deletion');
 
   // Show modal instead of redirecting, but not on admin center routes or account deletion
   const showModal = isLicenseExpired && !isAdminCenterRoute && !isAccountDeletionRoute;
@@ -99,7 +99,7 @@ export const SetupGuard = memo(({ children }: GuardProps) => {
   }
 
   if (!isSetupComplete) {
-    return <Navigate to="/worklenz/setup" />;
+    return <Navigate to="/taskmate/setup" />;
   }
 
   return <>{children}</>;
@@ -116,7 +116,7 @@ export const AuthAndSetupGuard = memo(({ children }: GuardProps) => {
   }
 
   if (!isSetupComplete) {
-    return <Navigate to="/worklenz/setup" />;
+    return <Navigate to="/taskmate/setup" />;
   }
 
   return <>{children}</>;
@@ -191,7 +191,7 @@ const StaticLicenseExpired = memo(() => {
             fontSize: '16px',
             cursor: 'pointer',
           }}
-          onClick={() => (window.location.href = '/worklenz/admin-center/billing')}
+          onClick={() => (window.location.href = '/taskmate/admin-center/billing')}
         >
           Upgrade now
         </button>

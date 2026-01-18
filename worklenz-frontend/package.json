@@ -1,5 +1,5 @@
 {
-  "name": "worklenz",
+  "name": "taskmate",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -65,7 +65,7 @@
     "socket.io-client": "^4.8.1",
     "tinymce": "^7.7.2",
     "web-vitals": "^4.2.4",
-    "worklenz": "file:"
+    "taskmate": "file:"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",

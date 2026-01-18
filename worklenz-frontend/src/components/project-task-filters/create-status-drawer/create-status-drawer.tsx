@@ -14,11 +14,15 @@ import { toggleDrawer } from '@/features/projects/status/StatusSlice';
 
 import './create-status-drawer.css';
 
-import { createStatus, fetchStatusesCategories, fetchStatuses } from '@/features/taskAttributes/taskStatusSlice';
+import {
+  createStatus,
+  fetchStatusesCategories,
+  fetchStatuses,
+} from '@/features/taskAttributes/taskStatusSlice';
 import { ITaskStatusCategory } from '@/types/status.types';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 import useTabSearchParam from '@/hooks/useTabSearchParam';
-import { evt_project_board_create_status } from '@/shared/worklenz-analytics-events';
+import { evt_project_board_create_status } from '@/shared/taskmate-analytics-events';
 import { fetchTaskGroups } from '@/features/tasks/tasks.slice';
 import { fetchBoardTaskGroups } from '@/features/board/board-slice';
 

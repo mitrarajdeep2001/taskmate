@@ -8,7 +8,12 @@ import Dropdown from 'antd/es/dropdown';
 import Input from 'antd/es/input';
 import Typography from 'antd/es/typography';
 import { MenuProps } from 'antd/es/menu';
-import { EditOutlined, EllipsisOutlined, RetweetOutlined, RightOutlined } from '@/shared/antd-imports';
+import {
+  EditOutlined,
+  EllipsisOutlined,
+  RetweetOutlined,
+  RightOutlined,
+} from '@/shared/antd-imports';
 
 import { colors } from '@/styles/colors';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -25,7 +30,7 @@ import { ITaskPhase } from '@/types/tasks/taskPhase.types';
 import { fetchPhasesByProjectId } from '@/features/projects/singleProject/phase/phases.slice';
 import { fetchStatuses } from '@/features/taskAttributes/taskStatusSlice';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_project_board_column_setting_click } from '@/shared/worklenz-analytics-events';
+import { evt_project_board_column_setting_click } from '@/shared/taskmate-analytics-events';
 import { ALPHA_CHANNEL } from '@/shared/constants';
 import useIsProjectManager from '@/hooks/useIsProjectManager';
 import logger from '@/utils/errorLogger';

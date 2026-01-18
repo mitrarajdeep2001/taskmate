@@ -326,7 +326,7 @@
 
 /* Add these new styles at the end of the file */
 
-.worklenz-notification {
+.taskmate-notification {
   padding: 12px;
   margin-bottom: 12px;
   transition: all 0.3s ease;
@@ -334,7 +334,7 @@
 }
 
 /* Light mode styles */
-[data-theme="light"] .worklenz-notification {
+[data-theme="light"] .taskmate-notification {
   --background-color: #fff;
   --text-color: rgba(0, 0, 0, 0.85);
   --secondary-text-color: rgba(0, 0, 0, 0.45);
@@ -342,22 +342,22 @@
 }
 
 /* Dark mode styles */
-[data-theme="dark"] .worklenz-notification {
+[data-theme="dark"] .taskmate-notification {
   --background-color: #1f1f1f;
   --text-color: rgba(255, 255, 255, 0.85);
   --secondary-text-color: rgba(255, 255, 255, 0.45);
   --hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
-.worklenz-notification:hover {
+.taskmate-notification:hover {
   box-shadow: var(--hover-shadow);
 }
 
-.worklenz-notification .ant-notification-notice-description {
+.taskmate-notification .ant-notification-notice-description {
   color: var(--text-color);
 }
 
-.worklenz-notification .ant-typography-secondary {
+.taskmate-notification .ant-typography-secondary {
   color: var(--secondary-text-color) !important;
 }
 

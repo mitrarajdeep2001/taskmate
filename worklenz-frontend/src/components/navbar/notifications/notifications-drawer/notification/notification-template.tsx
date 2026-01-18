@@ -58,7 +58,7 @@ const NotificationTemplate: React.FC<NotificationTemplateProps> = ({
     <div
       style={{ width: 'auto', border: `2px solid ${item.color}4d` }}
       onClick={goToUrl}
-      className={`ant-notification-notice worklenz-notification rounded-4 ${item.url ? 'cursor-pointer' : ''}`}
+      className={`ant-notification-notice taskmate-notification rounded-4 ${item.url ? 'cursor-pointer' : ''}`}
     >
       <div className="ant-notification-notice-content">
         <div className="ant-notification-notice-description">

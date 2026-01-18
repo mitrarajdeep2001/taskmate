@@ -39,7 +39,7 @@ import { useSocket } from '@/socket/socketContext';
 import { SocketEvents } from '@/shared/socket-events';
 import { phasesApiService } from '@/api/taskAttributes/phases/phases.api.service';
 import { fetchPhasesByProjectId } from '@/features/projects/singleProject/phase/phases.slice';
-import { evt_project_board_column_setting_click } from '@/shared/worklenz-analytics-events';
+import { evt_project_board_column_setting_click } from '@/shared/taskmate-analytics-events';
 import { ITaskPhase } from '@/types/tasks/taskPhase.types';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 import { statusApiService } from '@/api/taskAttributes/status/status.api.service';

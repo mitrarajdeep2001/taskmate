@@ -12,7 +12,7 @@ import logger from '@/utils/errorLogger';
 import { deleteProject } from '@features/projects/projectsSlice';
 import './projects.css';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_admin_center_projects_visit } from '@/shared/worklenz-analytics-events';
+import { evt_admin_center_projects_visit } from '@/shared/taskmate-analytics-events';
 import {
   Button,
   Card,

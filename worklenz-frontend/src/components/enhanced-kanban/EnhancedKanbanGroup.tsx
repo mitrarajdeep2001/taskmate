@@ -37,7 +37,7 @@ import { ITaskStatusUpdateModel } from '@/types/tasks/task-status-update-model.t
 import { statusApiService } from '@/api/taskAttributes/status/status.api.service';
 import { fetchStatuses } from '@/features/taskAttributes/taskStatusSlice';
 import logger from '@/utils/errorLogger';
-import { evt_project_board_column_setting_click } from '@/shared/worklenz-analytics-events';
+import { evt_project_board_column_setting_click } from '@/shared/taskmate-analytics-events';
 import { phasesApiService } from '@/api/taskAttributes/phases/phases.api.service';
 import { ITaskPhase } from '@/types/tasks/taskPhase.types';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';

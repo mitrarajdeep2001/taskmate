@@ -13,7 +13,7 @@ import { IOrganization, IOrganizationAdmin } from '@/types/admin-center/admin-ce
 import logger from '@/utils/errorLogger';
 import { tr } from 'date-fns/locale';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_admin_center_overview_visit } from '@/shared/worklenz-analytics-events';
+import { evt_admin_center_overview_visit } from '@/shared/taskmate-analytics-events';
 
 const { Text } = Typography;
 

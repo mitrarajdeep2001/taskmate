@@ -9,7 +9,7 @@ import { ILanguageType, Language, setLanguage } from '@/features/i18n/localesSli
 import {
   evt_settings_language_and_region_visit,
   evt_settings_language_changed,
-} from '@/shared/worklenz-analytics-events';
+} from '@/shared/taskmate-analytics-events';
 import { profileSettingsApiService } from '@/api/settings/profile/profile-settings.api.service';
 import { timezonesApiService } from '@/api/settings/language-timezones/language-timezones-api.service';
 import { ITimezone } from '@/types/settings/timezone.types';

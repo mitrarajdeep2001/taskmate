@@ -78,9 +78,7 @@ const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          {component}
-        </I18nextProvider>
+        <I18nextProvider i18n={i18n}>{component}</I18nextProvider>
       </BrowserRouter>
     </Provider>
   );
@@ -104,7 +102,7 @@ describe('AuthenticatingPage', () => {
 
   it('renders loading state correctly', () => {
     renderWithProviders(<AuthenticatingPage />);
-    
+
     expect(screen.getByText('Authenticating...')).toBeInTheDocument();
     expect(screen.getByText('Getting things ready for you...')).toBeInTheDocument();
     expect(screen.getByRole('generic', { busy: true })).toBeInTheDocument();
@@ -144,7 +142,7 @@ describe('AuthenticatingPage', () => {
 
     expect(setSession).toHaveBeenCalledWith(mockUser);
     expect(setUser).toHaveBeenCalledWith(mockUser);
-    expect(mockNavigate).toHaveBeenCalledWith('/worklenz/setup');
+    expect(mockNavigate).toHaveBeenCalledWith('/taskmate/setup');
   });
 
   it('redirects to home after successful authentication', async () => {
@@ -168,7 +166,7 @@ describe('AuthenticatingPage', () => {
 
     expect(setSession).toHaveBeenCalledWith(mockUser);
     expect(setUser).toHaveBeenCalledWith(mockUser);
-    expect(mockNavigate).toHaveBeenCalledWith('/worklenz/home');
+    expect(mockNavigate).toHaveBeenCalledWith('/taskmate/home');
   });
 
   it('redirects to project when redirect key is present in localStorage', async () => {
@@ -209,7 +207,7 @@ describe('AuthenticatingPage', () => {
 
     expect(setSession).toHaveBeenCalledWith(mockUser);
     expect(setUser).toHaveBeenCalledWith(mockUser);
-    expect(hrefValue).toBe(`/worklenz/projects/${projectId}?tab=tasks-list`);
+    expect(hrefValue).toBe(`/taskmate/projects/${projectId}?tab=tasks-list`);
     expect(localStorage.getItem('worklenz_redirect_proj')).toBeNull();
   });
 

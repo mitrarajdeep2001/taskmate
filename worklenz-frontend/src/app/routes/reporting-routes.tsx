@@ -18,15 +18,11 @@ const flattenedItems = flattenItems(reportingsItems);
 
 const reportingRoutes: RouteObject[] = [
   {
-    path: 'worklenz/reporting',
+    path: 'taskmate/reporting',
     element: <ReportingLayout />,
     children: flattenedItems.map(item => ({
       path: item.endpoint,
-      element: (
-        <Suspense fallback={<SuspenseFallback />}>
-          {item.element}
-        </Suspense>
-      ),
+      element: <Suspense fallback={<SuspenseFallback />}>{item.element}</Suspense>,
     })),
   },
 ];

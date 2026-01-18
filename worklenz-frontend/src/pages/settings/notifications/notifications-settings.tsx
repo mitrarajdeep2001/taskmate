@@ -7,7 +7,7 @@ import { INotificationSettings } from '@/types/settings/notifications.types';
 import { profileSettingsApiService } from '@/api/settings/profile/profile-settings.api.service';
 import logger from '@/utils/errorLogger';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_notifications_visit } from '@/shared/worklenz-analytics-events';
+import { evt_settings_notifications_visit } from '@/shared/taskmate-analytics-events';
 
 const NotificationsSettings = () => {
   const { t } = useTranslation('settings/notifications');

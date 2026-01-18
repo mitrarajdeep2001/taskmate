@@ -32,7 +32,7 @@ import ClientDrawer from './client-drawer';
 import { useDocumentTitle } from '@/hooks/useDoumentTItle';
 import logger from '@/utils/errorLogger';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_clients_visit } from '@/shared/worklenz-analytics-events';
+import { evt_settings_clients_visit } from '@/shared/taskmate-analytics-events';
 
 const ClientsSettings: React.FC = () => {
   const { t } = useTranslation('settings/clients');
@@ -173,7 +173,7 @@ const ClientsSettings: React.FC = () => {
             <Tooltip title={t('pinTooltip')} trigger={'hover'}>
               <PinRouteToNavbarButton
                 name="clients"
-                path="/worklenz/settings/clients"
+                path="/taskmate/settings/clients"
                 adminOnly={true}
               />
             </Tooltip>

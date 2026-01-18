@@ -1,6 +1,15 @@
 import { SearchOutlined, SyncOutlined } from '@/shared/antd-imports';
 import { PageHeader } from '@ant-design/pro-components';
-import { Button, Card, Flex, Input, Table, TableProps, Tooltip, Typography } from '@/shared/antd-imports';
+import {
+  Button,
+  Card,
+  Flex,
+  Input,
+  Table,
+  TableProps,
+  Tooltip,
+  Typography,
+} from '@/shared/antd-imports';
 import React, { useEffect, useState } from 'react';
 import { RootState } from '@/app/store';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -12,7 +21,7 @@ import logger from '@/utils/errorLogger';
 import { formatDateTimeWithLocale } from '@/utils/format-date-time-with-locale';
 import SingleAvatar from '@/components/common/single-avatar/single-avatar';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_admin_center_users_visit } from '@/shared/worklenz-analytics-events';
+import { evt_admin_center_users_visit } from '@/shared/taskmate-analytics-events';
 
 const Users: React.FC = () => {
   const { t } = useTranslation('admin-center/users');

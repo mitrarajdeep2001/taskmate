@@ -1,4 +1,12 @@
-import { Button, Card, Popconfirm, Table, TableProps, Tooltip, Typography } from '@/shared/antd-imports';
+import {
+  Button,
+  Card,
+  Popconfirm,
+  Table,
+  TableProps,
+  Tooltip,
+  Typography,
+} from '@/shared/antd-imports';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -55,7 +63,7 @@ const ProjectTemplatesSettings = () => {
             <Button
               size="small"
               onClick={() =>
-                navigate(`/worklenz/settings/project-templates/edit/${record.id}/${record.name}`)
+                navigate(`/taskmate/settings/project-templates/edit/${record.id}/${record.name}`)
               }
             >
               <EditOutlined />

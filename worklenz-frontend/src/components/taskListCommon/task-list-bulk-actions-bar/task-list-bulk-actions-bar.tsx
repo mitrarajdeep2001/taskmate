@@ -28,7 +28,7 @@ import {
   evt_project_task_list_bulk_change_status,
   evt_project_task_list_bulk_delete,
   evt_project_task_list_bulk_update_labels,
-} from '@/shared/worklenz-analytics-events';
+} from '@/shared/taskmate-analytics-events';
 import {
   IBulkTasksLabelsRequest,
   IBulkTasksPhaseChangeRequest,

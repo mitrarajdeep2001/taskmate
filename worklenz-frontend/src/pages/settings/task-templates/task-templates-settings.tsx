@@ -1,4 +1,12 @@
-import { Button, Card, Popconfirm, Table, TableProps, Tooltip, Typography } from '@/shared/antd-imports';
+import {
+  Button,
+  Card,
+  Popconfirm,
+  Table,
+  TableProps,
+  Tooltip,
+  Typography,
+} from '@/shared/antd-imports';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './task-templates-settings.css';
@@ -12,7 +20,7 @@ import logger from '@/utils/errorLogger';
 import { taskTemplatesApiService } from '@/api/task-templates/task-templates.api.service';
 import { calculateTimeGap } from '@/utils/calculate-time-gap';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_task_templates_visit } from '@/shared/worklenz-analytics-events';
+import { evt_settings_task_templates_visit } from '@/shared/taskmate-analytics-events';
 
 const TaskTemplatesSettings = () => {
   const { t } = useTranslation('settings/task-templates');

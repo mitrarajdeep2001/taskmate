@@ -20,7 +20,7 @@ import {
   evt_settings_profile_visit,
   evt_settings_profile_name_change,
   evt_settings_profile_picture_update,
-} from '@/shared/worklenz-analytics-events';
+} from '@/shared/taskmate-analytics-events';
 import { useAuthService } from '@/hooks/useAuth';
 import { getBase64 } from '@/utils/file-utils';
 

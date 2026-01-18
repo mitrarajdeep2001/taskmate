@@ -1,4 +1,14 @@
-import { Button, Card, Col, Form, Input, notification, Row, Tag, Typography } from '@/shared/antd-imports';
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  notification,
+  Row,
+  Tag,
+  Typography,
+} from '@/shared/antd-imports';
 import React, { useState } from 'react';
 import './upgrade-plans-lkr.css';
 import { CheckCircleFilled } from '@/shared/antd-imports';
@@ -136,7 +146,7 @@ const UpgradePlansLKR: React.FC = () => {
         if (authorizeResponse.authenticated) {
           setSession(authorizeResponse.user);
           dispatch(setUser(authorizeResponse.user));
-          window.location.href = '/worklenz/admin-center/billing';
+          window.location.href = '/taskmate/admin-center/billing';
         }
       }
     } catch (error) {

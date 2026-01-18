@@ -79,7 +79,7 @@ const useColumnConfig = (projectId?: string): ColumnConfig[] => {
 
   // For now, return default configuration
   // You can extend this to load from localStorage or API
-  const storedConfig = localStorage.getItem(`worklenz.column-config.${projectId}`);
+  const storedConfig = localStorage.getItem(`taskmate.column-config.${projectId}`);
 
   if (storedConfig) {
     try {
@@ -95,7 +95,7 @@ const useColumnConfig = (projectId?: string): ColumnConfig[] => {
 // Hook to save column configuration
 const useSaveColumnConfig = () => {
   return (projectId: string, config: ColumnConfig[]) => {
-    localStorage.setItem(`worklenz.column-config.${projectId}`, JSON.stringify(config));
+    localStorage.setItem(`taskmate.column-config.${projectId}`, JSON.stringify(config));
   };
 };
 

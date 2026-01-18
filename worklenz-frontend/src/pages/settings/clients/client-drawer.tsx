@@ -10,7 +10,7 @@ import {
 import { IClient } from '@/types/client.types';
 import { useTranslation } from 'react-i18next';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_clients_create } from '@/shared/worklenz-analytics-events';
+import { evt_settings_clients_create } from '@/shared/taskmate-analytics-events';
 
 type ClientDrawerProps = {
   client: IClient | null;

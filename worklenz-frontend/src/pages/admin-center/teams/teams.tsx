@@ -21,7 +21,7 @@ import { RootState } from '@/app/store';
 import { useTranslation } from 'react-i18next';
 import AddTeamDrawer from '@/components/admin-center/teams/add-team-drawer/add-team-drawer';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_admin_center_teams_visit } from '@/shared/worklenz-analytics-events';
+import { evt_admin_center_teams_visit } from '@/shared/taskmate-analytics-events';
 
 export interface IRequestParams extends IOrganizationTeamRequestParams {
   total: number;

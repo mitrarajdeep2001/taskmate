@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { createAuthService } from '@/services/auth/auth.service';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_common_switch_team } from '@/shared/worklenz-analytics-events';
+import { evt_common_switch_team } from '@/shared/taskmate-analytics-events';
 
 // Components
 import CustomAvatar from '@/components/CustomAvatar';

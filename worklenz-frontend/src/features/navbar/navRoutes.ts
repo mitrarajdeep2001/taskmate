@@ -8,25 +8,25 @@ export type NavRoutesType = {
 export const navRoutes: NavRoutesType[] = [
   {
     name: 'home',
-    path: '/worklenz/home',
+    path: '/taskmate/home',
     adminOnly: false,
     freePlanFeature: true,
   },
   {
     name: 'projects',
-    path: '/worklenz/projects',
+    path: '/taskmate/projects',
     adminOnly: false,
     freePlanFeature: true,
   },
   // {
   //   name: 'schedule',
-  //   path: '/worklenz/schedule',
+  //   path: '/taskmate/schedule',
   //   adminOnly: true,
   //   freePlanFeature: false,
   // },
   {
     name: 'reporting',
-    path: '/worklenz/reporting/overview',
+    path: '/taskmate/reporting/overview',
     adminOnly: true,
     freePlanFeature: false,
   },

@@ -64,6 +64,7 @@ export default class TeamMembersController extends WorklenzControllerBase {
 
 
     const projectId = (body as any)?.project_id;
+console.log('entered here => createOrInviteMembers');
 
     NotificationsService.sendTeamMembersInvitations(newMembers, user, projectId || "");
 
@@ -77,6 +78,7 @@ export default class TeamMembersController extends WorklenzControllerBase {
   })
   public static async create(req: IWorkLenzRequest, res: IWorkLenzResponse): Promise<IWorkLenzResponse> {
     req.body.team_id = req.user?.team_id || null;
+console.log('entered here => create');
 
     if (!req.user?.team_id) {
       return res.status(200).send(new ServerResponse(false, "Required fields are missing."));

@@ -13,12 +13,12 @@ const rootUrl = `${API_BASE_URL}/project-templates`;
 
 export const projectTemplatesApiService = {
   getWorklenzTemplates: async (): Promise<IServerResponse<IWorklenzTemplate[]>> => {
-    const response = await apiClient.get(`${rootUrl}/worklenz-templates`);
+    const response = await apiClient.get(`${rootUrl}/taskmate-templates`);
     return response.data;
   },
 
   getByTemplateId: async (templateId: string): Promise<IServerResponse<IProjectTemplate>> => {
-    const response = await apiClient.get(`${rootUrl}/worklenz-templates/${templateId}`);
+    const response = await apiClient.get(`${rootUrl}/taskmate-templates/${templateId}`);
     return response.data;
   },
 

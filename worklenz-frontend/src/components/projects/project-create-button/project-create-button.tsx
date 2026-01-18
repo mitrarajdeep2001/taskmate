@@ -12,7 +12,10 @@ import {
 } from '@/features/project/project-drawer.slice';
 import { IProjectViewModel } from '@/types/project/projectViewModel.types';
 import { projectTemplatesApiService } from '@/api/project-templates/project-templates.api.service';
-import { evt_projects_create_click, evt_project_import_from_template_click } from '@/shared/worklenz-analytics-events';
+import {
+  evt_projects_create_click,
+  evt_project_import_from_template_click,
+} from '@/shared/taskmate-analytics-events';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 interface CreateProjectButtonProps {
   className?: string;
@@ -24,7 +27,7 @@ const CreateProjectButton: React.FC<CreateProjectButtonProps> = ({ className }) 
   const { trackMixpanelEvent } = useMixpanelTracking();
   const [isTemplateDrawerOpen, setIsTemplateDrawerOpen] = useState(false);
   const [currentTemplateId, setCurrentTemplateId] = useState<string>('');
-  const [selectedType, setSelectedType] = useState<'worklenz' | 'custom'>('worklenz');
+  const [selectedType, setSelectedType] = useState<'taskmate' | 'custom'>('taskmate');
   const [projectImporting, setProjectImporting] = useState(false);
   const [currentPath, setCurrentPath] = useState<string>('');
   const location = useLocation();
@@ -43,7 +46,7 @@ const CreateProjectButton: React.FC<CreateProjectButtonProps> = ({ className }) 
   const handleTemplateDrawerClose = () => {
     setIsTemplateDrawerOpen(false);
     setCurrentTemplateId('');
-    setSelectedType('worklenz');
+    setSelectedType('taskmate');
   };
 
   const handleTemplateSelect = (templateId: string) => {
@@ -78,13 +81,13 @@ const CreateProjectButton: React.FC<CreateProjectButtonProps> = ({ className }) 
     if (!currentTemplateId || currentTemplateId === '') return;
     try {
       setProjectImporting(true);
-      if (selectedType === 'worklenz') {
+      if (selectedType === 'taskmate') {
         const res = await projectTemplatesApiService.createFromWorklenzTemplate({
           template_id: currentTemplateId,
         });
         if (res.done) {
           navigate(
-            `/worklenz/projects/${res.body.project_id}?tab=tasks-list&pinned_tab=tasks-list`
+            `/taskmate/projects/${res.body.project_id}?tab=tasks-list&pinned_tab=tasks-list`
           );
         }
       } else {
@@ -93,7 +96,7 @@ const CreateProjectButton: React.FC<CreateProjectButtonProps> = ({ className }) 
         });
         if (res.done) {
           navigate(
-            `/worklenz/projects/${res.body.project_id}?tab=tasks-list&pinned_tab=tasks-list`
+            `/taskmate/projects/${res.body.project_id}?tab=tasks-list&pinned_tab=tasks-list`
           );
         }
       }

@@ -12,7 +12,7 @@ import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 import {
   evt_forgot_password_page_visit,
   evt_reset_password_click,
-} from '@/shared/worklenz-analytics-events';
+} from '@/shared/taskmate-analytics-events';
 import { resetPassword, verifyAuthentication } from '@features/auth/authSlice';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { setSession } from '@/utils/session-helper';
@@ -50,7 +50,7 @@ const ForgotPasswordPage = () => {
         if (session?.authenticated) {
           setSession(session.user);
           dispatch(setUser(session.user));
-          navigate('/worklenz/home');
+          navigate('/taskmate/home');
         }
       } catch (error) {
         logger.error('Failed to verify authentication status', error);
@@ -120,7 +120,7 @@ const ForgotPasswordPage = () => {
             >
               <Input
                 prefix={<UserOutlined />}
-                placeholder={t('emailPlaceholder', {defaultValue: 'Enter your email'})}
+                placeholder={t('emailPlaceholder', { defaultValue: 'Enter your email' })}
                 size="large"
                 style={{ borderRadius: 4 }}
               />
@@ -136,7 +136,7 @@ const ForgotPasswordPage = () => {
                   loading={isLoading}
                   style={{ borderRadius: 4 }}
                 >
-                  {t('resetPasswordButton', {defaultValue: 'Reset Password'})}
+                  {t('resetPasswordButton', { defaultValue: 'Reset Password' })}
                 </Button>
                 <Typography.Text style={{ textAlign: 'center' }}>{t('orText')}</Typography.Text>
                 <Link to="/auth/login">
@@ -148,7 +148,7 @@ const ForgotPasswordPage = () => {
                       borderRadius: 4,
                     }}
                   >
-                    {t('returnToLoginButton', {defaultValue: 'Return to Login'})}
+                    {t('returnToLoginButton', { defaultValue: 'Return to Login' })}
                   </Button>
                 </Link>
               </Flex>

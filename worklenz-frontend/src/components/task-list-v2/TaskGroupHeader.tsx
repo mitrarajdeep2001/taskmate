@@ -33,7 +33,7 @@ import { ITaskStatusUpdateModel } from '@/types/tasks/task-status-update-model.t
 import { ITaskPhase } from '@/types/tasks/taskPhase.types';
 import logger from '@/utils/errorLogger';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_project_board_column_setting_click } from '@/shared/worklenz-analytics-events';
+import { evt_project_board_column_setting_click } from '@/shared/taskmate-analytics-events';
 
 interface TaskGroupHeaderProps {
   group: {
@@ -498,7 +498,11 @@ const TaskGroupHeader: React.FC<TaskGroupHeaderProps> = ({
 
       {/* Progress Bar - sticky to the right edge during horizontal scroll */}
       {(currentGrouping === 'priority' || currentGrouping === 'phase') &&
-        !(groupProgressValues.todoProgress === 0 && groupProgressValues.doingProgress === 0 && groupProgressValues.doneProgress === 0) && (
+        !(
+          groupProgressValues.todoProgress === 0 &&
+          groupProgressValues.doingProgress === 0 &&
+          groupProgressValues.doneProgress === 0
+        ) && (
           <div
             className="flex items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm px-3 py-1.5 ml-auto"
             style={{

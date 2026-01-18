@@ -11,7 +11,7 @@ import {
   TableProps,
   Tooltip,
   Typography,
-  Input
+  Input,
 } from '@/shared/antd-imports';
 
 // Icons
@@ -38,7 +38,7 @@ import logger from '@/utils/errorLogger';
 // Components
 import EmptyListPlaceholder from '../../../../components/EmptyListPlaceholder';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { evt_project_members_visit } from '@/shared/worklenz-analytics-events';
+import { evt_project_members_visit } from '@/shared/taskmate-analytics-events';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 
 interface PaginationType {
@@ -304,7 +304,7 @@ const ProjectViewMembers = () => {
     >
       {members?.total === 0 ? (
         <EmptyListPlaceholder
-          imageSrc="https://s3.us-west-2.amazonaws.com/worklenz.com/assets/empty-box.webp"
+          imageSrc="https://s3.us-west-2.amazonaws.com/taskmate.com/assets/empty-box.webp"
           imageHeight={120}
           text={t('emptyText')}
         />

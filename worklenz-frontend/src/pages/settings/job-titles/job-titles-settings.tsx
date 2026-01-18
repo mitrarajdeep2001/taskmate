@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 import JobTitleDrawer from './job-titles-drawer';
 import logger from '@/utils/errorLogger';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_job_titles_visit } from '@/shared/worklenz-analytics-events';
+import { evt_settings_job_titles_visit } from '@/shared/taskmate-analytics-events';
 
 interface PaginationType {
   current: number;
@@ -184,7 +184,7 @@ const JobTitlesSettings = () => {
             <Tooltip title={t('pinTooltip')} trigger={'hover'}>
               <PinRouteToNavbarButton
                 name="jobTitles"
-                path="/worklenz/settings/job-titles"
+                path="/taskmate/settings/job-titles"
                 adminOnly
               />
             </Tooltip>

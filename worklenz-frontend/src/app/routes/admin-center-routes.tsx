@@ -10,7 +10,7 @@ const AdminCenterGuard = ({ children }: { children: React.ReactNode }) => {
   const isOwnerOrAdmin = useAuthService().isOwnerOrAdmin();
 
   if (!isOwnerOrAdmin) {
-    return <Navigate to="/worklenz/unauthorized" replace />;
+    return <Navigate to="/taskmate/unauthorized" replace />;
   }
 
   return <>{children}</>;
@@ -26,11 +26,7 @@ const adminCenterRoutes: RouteObject[] = [
     ),
     children: adminCenterItems.map(item => ({
       path: item.endpoint,
-      element: (
-        <Suspense fallback={<SuspenseFallback />}>
-          {item.element}
-        </Suspense>
-      ),
+      element: <Suspense fallback={<SuspenseFallback />}>{item.element}</Suspense>,
     })),
   },
 ];

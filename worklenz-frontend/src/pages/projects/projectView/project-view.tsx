@@ -144,7 +144,7 @@ const ProjectView = React.memo(() => {
     const currentPath = location.pathname;
 
     // If we're not on a project view path, clean up
-    if (!currentPath.includes('/worklenz/projects/') || currentPath === '/worklenz/projects') {
+    if (!currentPath.includes('/taskmate/projects/') || currentPath === '/taskmate/projects') {
       resetAllProjectData();
     }
   }, [location.pathname, resetAllProjectData]);
@@ -172,14 +172,14 @@ const ProjectView = React.memo(() => {
           ]);
 
           if (projectResult.status === 'fulfilled' && !projectResult.value.payload) {
-            navigate('/worklenz/projects');
+            navigate('/taskmate/projects');
             return;
           }
 
           setIsInitialized(true);
         } catch (error) {
           console.error('Error loading project data:', error);
-          navigate('/worklenz/projects');
+          navigate('/taskmate/projects');
         }
       };
 
@@ -222,7 +222,7 @@ const ProjectView = React.memo(() => {
 
           navigate(
             {
-              pathname: `/worklenz/projects/${projectId}`,
+              pathname: `/taskmate/projects/${projectId}`,
               search: new URLSearchParams({
                 tab: activeTab,
                 pinned_tab: itemKey,

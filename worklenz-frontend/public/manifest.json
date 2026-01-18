@@ -35,7 +35,7 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "View your project dashboard",
-      "url": "/worklenz",
+      "url": "/taskmate",
       "icons": [
         {
           "src": "/favicon.ico",
@@ -47,7 +47,7 @@
       "name": "Tasks",
       "short_name": "Tasks",
       "description": "Manage your tasks",
-      "url": "/worklenz/tasks",
+      "url": "/taskmate/tasks",
       "icons": [
         {
           "src": "/favicon.ico",
@@ -75,4 +75,4 @@
   "launch_handler": {
     "client_mode": "focus-existing"
   }
-} 
+}

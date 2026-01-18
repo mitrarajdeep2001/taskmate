@@ -24,7 +24,7 @@ const UpgradePlanButton = () => {
     const expirableTypes = [
       ISUBSCRIPTION_TYPE.TRIAL,
       ISUBSCRIPTION_TYPE.PADDLE,
-      ISUBSCRIPTION_TYPE.CUSTOM
+      ISUBSCRIPTION_TYPE.CUSTOM,
     ];
 
     if (
@@ -36,7 +36,7 @@ const UpgradePlanButton = () => {
       const expiryDate = new Date(expireDateStr!);
       const diffTime = expiryDate.getTime() - today.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
+
       // Show badge if 7 days or less remaining
       if (diffDays <= 7 && diffDays >= 0) {
         setDaysRemaining(diffDays);
@@ -88,7 +88,7 @@ const UpgradePlanButton = () => {
         color: '#fff',
       };
     }
-    
+
     if (daysRemaining !== null && daysRemaining <= 3) {
       return {
         ...baseStyles,
@@ -99,8 +99,8 @@ const UpgradePlanButton = () => {
 
     return {
       ...baseStyles,
-      background: isDark 
-        ? 'linear-gradient(135deg, #d4a574 0%, #b38750 100%)' 
+      background: isDark
+        ? 'linear-gradient(135deg, #d4a574 0%, #b38750 100%)'
         : 'linear-gradient(135deg, #fef3d7 0%, #fde8b5 100%)',
       color: isDark ? '#fff' : '#8b6914',
     };
@@ -112,18 +112,16 @@ const UpgradePlanButton = () => {
       size="small"
       type="primary"
       icon={getButtonIcon()}
-      onClick={() => navigate('/worklenz/admin-center/billing')}
-      onMouseEnter={(e) => {
+      onClick={() => navigate('/taskmate/admin-center/billing')}
+      onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = themeMode === 'dark' 
-          ? '0 4px 8px rgba(0,0,0,0.3)' 
-          : '0 4px 8px rgba(0,0,0,0.1)';
+        e.currentTarget.style.boxShadow =
+          themeMode === 'dark' ? '0 4px 8px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.1)';
       }}
-      onMouseLeave={(e) => {
+      onMouseLeave={e => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = themeMode === 'dark' 
-          ? '0 2px 4px rgba(0,0,0,0.2)' 
-          : '0 2px 4px rgba(0,0,0,0.05)';
+        e.currentTarget.style.boxShadow =
+          themeMode === 'dark' ? '0 2px 4px rgba(0,0,0,0.2)' : '0 2px 4px rgba(0,0,0,0.05)';
       }}
     >
       {t('upgradePlan')}
@@ -142,7 +140,7 @@ const UpgradePlanButton = () => {
         </div>
       );
     }
-    
+
     if (daysRemaining !== null && daysRemaining <= 7) {
       return (
         <div style={{ textAlign: 'center' }}>
@@ -154,20 +152,16 @@ const UpgradePlanButton = () => {
         </div>
       );
     }
-    
+
     return t('upgradePlanTooltip');
   };
 
   if (daysRemaining !== null) {
     return (
-      <Tooltip 
-        title={getTooltipContent()}
-        placement="bottom"
-        overlayStyle={{ maxWidth: '280px' }}
-      >
-        <Badge 
-          count={getBadgeText()} 
-          style={{ 
+      <Tooltip title={getTooltipContent()} placement="bottom" overlayStyle={{ maxWidth: '280px' }}>
+        <Badge
+          count={getBadgeText()}
+          style={{
             backgroundColor: getBadgeColor(),
             fontSize: '11px',
             height: '20px',
@@ -201,10 +195,7 @@ const UpgradePlanButton = () => {
   }
 
   return (
-    <Tooltip 
-      title={getTooltipContent()}
-      placement="bottom"
-    >
+    <Tooltip title={getTooltipContent()} placement="bottom">
       {button}
     </Tooltip>
   );

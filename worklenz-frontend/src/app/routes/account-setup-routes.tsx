@@ -4,7 +4,7 @@ import { SuspenseFallback } from '@/components/suspense-fallback/suspense-fallba
 const AccountSetup = lazy(() => import('@/pages/account-setup/account-setup'));
 
 const accountSetupRoute: RouteObject = {
-  path: '/worklenz/setup',
+  path: '/taskmate/setup',
   element: (
     <Suspense fallback={<SuspenseFallback />}>
       <AccountSetup />

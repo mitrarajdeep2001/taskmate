@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { jobTitlesApiService } from '@/api/settings/job-titles/job-titles.api.service';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_job_titles_create } from '@/shared/worklenz-analytics-events';
+import { evt_settings_job_titles_create } from '@/shared/taskmate-analytics-events';
 
 type JobTitleDrawerProps = {
   drawerOpen: boolean;

@@ -52,7 +52,7 @@ const NotificationDrawer = () => {
 
   const createPush = (message: string, title: string, teamId: string | null, url?: string) => {
     if (Notification.permission === 'granted' && showBrowserPush) {
-      const img = 'https://worklenz.com/assets/icons/icon-128x128.png';
+      const img = 'https://taskmate.com/assets/icons/icon-128x128.png';
       const notification = new Notification(title, {
         body: message.replace(HTML_TAG_REGEXP, ''),
         icon: img,

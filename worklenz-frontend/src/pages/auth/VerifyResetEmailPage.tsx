@@ -14,7 +14,7 @@ import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 
 import { updatePassword } from '@/features/auth/authSlice';
-import { evt_verify_reset_email_page_visit } from '@/shared/worklenz-analytics-events';
+import { evt_verify_reset_email_page_visit } from '@/shared/taskmate-analytics-events';
 
 import logger from '@/utils/errorLogger';
 import { IUpdatePasswordRequest } from '@/types/auth/verify-reset-email.types';
@@ -153,14 +153,22 @@ const VerifyResetEmailPage = () => {
                   {passwordChecklistItems.map(item => {
                     const passed = item.test(passwordValue);
                     let color = passed
-                      ? (themeMode === 'dark' ? '#52c41a' : '#389e0d')
-                      : (themeMode === 'dark' ? '#b0b3b8' : '#bfbfbf');
+                      ? themeMode === 'dark'
+                        ? '#52c41a'
+                        : '#389e0d'
+                      : themeMode === 'dark'
+                        ? '#b0b3b8'
+                        : '#bfbfbf';
                     return (
                       <Flex key={item.key} align="center" gap={8} style={{ color, fontSize: 13 }}>
                         {passed ? (
-                          <CheckCircleTwoTone twoToneColor={themeMode === 'dark' ? '#52c41a' : '#52c41a'} />
+                          <CheckCircleTwoTone
+                            twoToneColor={themeMode === 'dark' ? '#52c41a' : '#52c41a'}
+                          />
                         ) : (
-                          <CloseCircleTwoTone twoToneColor={themeMode === 'dark' ? '#b0b3b8' : '#bfbfbf'} />
+                          <CloseCircleTwoTone
+                            twoToneColor={themeMode === 'dark' ? '#b0b3b8' : '#bfbfbf'}
+                          />
                         )}
                         <span>{item.label}</span>
                       </Flex>

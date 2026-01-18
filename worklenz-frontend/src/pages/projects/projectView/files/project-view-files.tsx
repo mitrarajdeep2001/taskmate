@@ -29,7 +29,7 @@ import {
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { attachmentsApiService } from '@/api/attachments/attachments.api.service';
 import logger from '@/utils/errorLogger';
-import { evt_project_files_visit } from '@/shared/worklenz-analytics-events';
+import { evt_project_files_visit } from '@/shared/taskmate-analytics-events';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 
 const ProjectViewFiles = () => {

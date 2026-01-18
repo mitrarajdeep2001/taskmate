@@ -212,7 +212,7 @@ const apiLimiter = rateLimit({
 // Routes
 app.use("/api/v1", apiLimiter, isLoggedIn, apiRouter);
 app.use("/secure", authRouter);
-app.use("/public", public_router);
+app.use("/", public_router);
 
 if (isInternalServer()) {
   app.use("/email-templates", emailTemplatesRouter);

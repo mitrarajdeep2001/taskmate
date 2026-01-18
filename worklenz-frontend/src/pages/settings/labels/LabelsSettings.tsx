@@ -24,7 +24,7 @@ import { useDocumentTitle } from '@/hooks/useDoumentTItle';
 import logger from '@/utils/errorLogger';
 import LabelsDrawer from './labels-drawer';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_labels_visit } from '@/shared/worklenz-analytics-events';
+import { evt_settings_labels_visit } from '@/shared/taskmate-analytics-events';
 
 const LabelsSettings = () => {
   const { t } = useTranslation('settings/labels');
@@ -88,7 +88,6 @@ const LabelsSettings = () => {
     getLabels();
   };
 
-
   // table columns
   const columns: TableProps['columns'] = [
     {
@@ -115,7 +114,7 @@ const LabelsSettings = () => {
                 shape="default"
                 icon={<EditOutlined />}
                 size="small"
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   handleEditClick(record.id!);
                 }}
@@ -129,11 +128,11 @@ const LabelsSettings = () => {
               onConfirm={() => deleteLabel(record.id!)}
             >
               <Tooltip title={t('deleteTooltip', 'Delete')}>
-                <Button 
-                  shape="default" 
-                  icon={<DeleteOutlined />} 
+                <Button
+                  shape="default"
+                  icon={<DeleteOutlined />}
                   size="small"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={e => e.stopPropagation()}
                 />
               </Tooltip>
             </Popconfirm>
@@ -157,9 +156,12 @@ const LabelsSettings = () => {
               suffix={<SearchOutlined />}
             />
 
-            <Tooltip title={t('pinTooltip', 'Click to pin this into the main menu')} trigger={'hover'}>
+            <Tooltip
+              title={t('pinTooltip', 'Click to pin this into the main menu')}
+              trigger={'hover'}
+            >
               {/* this button pin this route to navbar  */}
-              <PinRouteToNavbarButton name="labels" path="/worklenz/settings/labels" />
+              <PinRouteToNavbarButton name="labels" path="/taskmate/settings/labels" />
             </Tooltip>
           </Flex>
         </Flex>
@@ -167,14 +169,18 @@ const LabelsSettings = () => {
     >
       <Table
         locale={{
-          emptyText: <Typography.Text>{t('emptyText', 'Labels can be created while updating or creating tasks.')}</Typography.Text>,
+          emptyText: (
+            <Typography.Text>
+              {t('emptyText', 'Labels can be created while updating or creating tasks.')}
+            </Typography.Text>
+          ),
         }}
         loading={loading}
         className="custom-two-colors-row-table"
         dataSource={filteredData}
         columns={columns}
         rowKey={record => record.id!}
-        onRow={(record) => ({
+        onRow={record => ({
           style: { cursor: 'pointer' },
           onClick: () => handleEditClick(record.id!),
         })}

@@ -41,7 +41,7 @@ export const GROUP_BY_OPTIONS: IGroupByOption[] = [
   { label: 'Phase', value: GROUP_BY_PHASE_VALUE },
 ];
 
-const LOCALSTORAGE_GROUP_KEY = 'worklenz.tasklist.group_by';
+const LOCALSTORAGE_GROUP_KEY = 'taskmate.tasklist.group_by';
 
 export const getCurrentGroup = (): IGroupByOption => {
   const key = localStorage.getItem(LOCALSTORAGE_GROUP_KEY);

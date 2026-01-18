@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 const ProtectedRoute = ({
   children,
   isAllowed,
-  redirectPath = '/worklenz/login',
+  redirectPath = '/taskmate/login',
 }: ProtectedRouteProps) => {
   const location = useLocation();
 

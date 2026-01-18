@@ -53,7 +53,7 @@ import {
   evt_project_task_list_context_menu_archive,
   evt_project_task_list_context_menu_assign_me,
   evt_project_task_list_context_menu_delete,
-} from '@/shared/worklenz-analytics-events';
+} from '@/shared/taskmate-analytics-events';
 import logger from '@/utils/errorLogger';
 import { useAuthService } from '@/hooks/useAuth';
 import PrioritySection from '@/components/board/taskCard/priority-section/priority-section';

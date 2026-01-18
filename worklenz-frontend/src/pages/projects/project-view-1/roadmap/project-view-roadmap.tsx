@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMixpanelTracking } from '../../../../hooks/useMixpanelTracking';
-import { evt_project_roadmap_visit } from '../../../../shared/worklenz-analytics-events';
+import { evt_project_roadmap_visit } from '../../../../shared/taskmate-analytics-events';
 import { ViewMode } from 'gantt-task-react';
 import 'gantt-task-react/dist/index.css';
 import './project-view-roadmap.css';

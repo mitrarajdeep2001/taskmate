@@ -1,4 +1,13 @@
-import { Button, Card, Checkbox, Dropdown, Flex, Skeleton, Space, Typography } from '@/shared/antd-imports';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Dropdown,
+  Flex,
+  Skeleton,
+  Space,
+  Typography,
+} from '@/shared/antd-imports';
 import { DownOutlined } from '@/shared/antd-imports';
 import MembersReportsTable from './members-reports-table/members-reports-table';
 import TimeWiseFilter from '@/components/reporting/time-wise-filter';
@@ -19,7 +28,7 @@ import { useAuthService } from '@/hooks/useAuth';
 import { reportingExportApiService } from '@/api/reporting/reporting-export.api.service';
 import { useEffect } from 'react';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_reporting_allocation } from '@/shared/worklenz-analytics-events';
+import { evt_reporting_allocation } from '@/shared/taskmate-analytics-events';
 
 const MembersReports = () => {
   const { t } = useTranslation('reporting-members');

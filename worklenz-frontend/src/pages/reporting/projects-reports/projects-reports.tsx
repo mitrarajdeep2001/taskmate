@@ -1,7 +1,7 @@
 import { Button, Card, Checkbox, Dropdown, Flex, Space, Typography } from '@/shared/antd-imports';
 import { useMemo, useCallback, memo, useEffect } from 'react';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_reporting_projects_overview } from '@/shared/worklenz-analytics-events';
+import { evt_reporting_projects_overview } from '@/shared/taskmate-analytics-events';
 import CustomPageHeader from '@/pages/reporting/page-header/custom-page-header';
 import { DownOutlined } from '@/shared/antd-imports';
 import ProjectReportsTable from './projects-reports-table/projects-reports-table';

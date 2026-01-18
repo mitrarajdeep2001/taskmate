@@ -20,7 +20,7 @@ import {
   evt_login_with_email_click,
   evt_login_with_google_click,
   evt_login_remember_me_click,
-} from '@/shared/worklenz-analytics-events';
+} from '@/shared/taskmate-analytics-events';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
 import { useDocumentTitle } from '@/hooks/useDoumentTItle';
 import alertService from '@/services/alerts/alertService';
@@ -69,7 +69,7 @@ const LoginPage: React.FC = () => {
       if (session?.authenticated) {
         setSession(session.user);
         dispatch(setUser(session.user));
-        navigate('/worklenz/home');
+        navigate('/taskmate/home');
       }
     } catch (error) {
       logger.error('Failed to verify authentication status', error);
@@ -91,7 +91,7 @@ const LoginPage: React.FC = () => {
 
     trackMixpanelEvent(evt_login_page_visit);
     if (currentSession && !currentSession?.setup_completed) {
-      navigate('/worklenz/setup');
+      navigate('/taskmate/setup');
       return;
     }
     void verifyAuthStatus();
@@ -109,7 +109,7 @@ const LoginPage: React.FC = () => {
         // Normalize email to lowercase for case-insensitive comparison
         const normalizedValues = {
           ...values,
-          email: values.email.toLowerCase().trim()
+          email: values.email.toLowerCase().trim(),
         };
 
         const result = await dispatch(login(normalizedValues)).unwrap();

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import logo from '@/assets/images/worklenz-light-mode.png';
-import logoDark from '@/assets/images/worklenz-dark-mode.png';
+import logo from '@/assets/images/taskmate-light-mode.png';
+import logoDark from '@/assets/images/taskmate-dark-mode.png';
 
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ const NavbarLogo = () => {
   const themeMode = useSelector((state: RootState) => state.themeReducer.mode);
 
   return (
-    <Link to={'/worklenz/home'} className='flex'>
+    <Link to={'/taskmate/home'} className="flex">
       <div style={{ position: 'relative', display: 'inline-block' }}>
         <img
           src={themeMode === 'dark' ? logoDark : logo}

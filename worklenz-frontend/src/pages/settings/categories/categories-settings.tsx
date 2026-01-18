@@ -20,7 +20,7 @@ import { IProjectCategory, IProjectCategoryViewModel } from '@/types/project/pro
 import { useDocumentTitle } from '@/hooks/useDoumentTItle';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_categories_visit } from '@/shared/worklenz-analytics-events';
+import { evt_settings_categories_visit } from '@/shared/taskmate-analytics-events';
 
 const CategoriesSettings = () => {
   // localization

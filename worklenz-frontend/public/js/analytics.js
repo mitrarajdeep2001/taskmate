@@ -5,7 +5,7 @@
 
 class AnalyticsManager {
   constructor() {
-    this.isProduction = window.location.hostname === 'app.worklenz.com';
+    this.isProduction = window.location.hostname === 'app.taskmate.com';
     this.trackingId = this.isProduction ? 'G-7KSRKQ1397' : 'G-3LM2HGWEXG';
   }
 
@@ -77,9 +77,9 @@ class AnalyticsManager {
    * Check if privacy notice should be shown
    */
   checkPrivacyNotice() {
-    const isProduction = 
-      window.location.hostname === 'worklenz.com' ||
-      window.location.hostname === 'app.worklenz.com';
+    const isProduction =
+      window.location.hostname === 'taskmate.com' ||
+      window.location.hostname === 'app.taskmate.com';
     const noticeShown = localStorage.getItem('privacyNoticeShown') === 'true';
 
     // Show notice if not in production and not shown before

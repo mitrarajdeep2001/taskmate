@@ -36,9 +36,7 @@ const Navbar = () => {
   const { setIdentity } = useMixpanelTracking();
   const [navRoutesList, setNavRoutesList] = useState<NavRoutesType[]>(navRoutes);
   const [isOwnerOrAdmin, setIsOwnerOrAdmin] = useState<boolean>(authService.isOwnerOrAdmin());
-  const showUpgradeTypes = [
-    ISUBSCRIPTION_TYPE.TRIAL,
-  ];
+  const showUpgradeTypes = [ISUBSCRIPTION_TYPE.TRIAL];
 
   useEffect(() => {
     authApiService
@@ -95,7 +93,7 @@ const Navbar = () => {
   );
 
   useEffect(() => {
-    const afterWorklenzString = location.pathname.split('/worklenz/')[1];
+    const afterWorklenzString = location.pathname.split('/taskmate/')[1];
     const pathKey = afterWorklenzString.split('/')[0];
 
     setCurrent(pathKey ?? 'home');

@@ -25,7 +25,7 @@ import { ITaskListGroup } from '@/types/tasks/taskList.types';
 import { IProjectTask } from '@/types/project/projectTasksViewModel.types';
 import { SocketEvents } from '@/shared/socket-events';
 import { reorderTasks } from '@/features/tasks/tasks.slice';
-import { evt_project_task_list_drag_and_move } from '@/shared/worklenz-analytics-events';
+import { evt_project_task_list_drag_and_move } from '@/shared/taskmate-analytics-events';
 
 // Draggable Row Component
 interface DraggableRowProps {

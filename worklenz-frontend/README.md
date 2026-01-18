@@ -17,11 +17,11 @@ To get started with the project, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Worklenz/worklenz.git
+   git clone https://github.com/Worklenz/taskmate.git
    ```
 2. **Navigate to the project directory**:
    ```bash
-   cd worklenz/worklenz-frontend
+   cd taskmate/taskmate-frontend
    ```
 3. **Install dependencies**:
    ```bash

@@ -12,7 +12,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useDocumentTitle } from '@/hooks/useDoumentTItle';
 import { ITeamGetResponse } from '@/types/teams/team.type';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_settings_teams_visit } from '@/shared/worklenz-analytics-events';
+import { evt_settings_teams_visit } from '@/shared/taskmate-analytics-events';
 
 const TeamsSettings = () => {
   const { t } = useTranslation('settings/teams');
@@ -80,7 +80,7 @@ const TeamsSettings = () => {
 
         <Tooltip title={t('pinTooltip')} trigger={'hover'}>
           {/* this button pin this route to navbar  */}
-          <PinRouteToNavbarButton name="teams" path="/worklenz/settings/teams" adminOnly={true} />
+          <PinRouteToNavbarButton name="teams" path="/taskmate/settings/teams" adminOnly={true} />
         </Tooltip>
       </Flex>
 

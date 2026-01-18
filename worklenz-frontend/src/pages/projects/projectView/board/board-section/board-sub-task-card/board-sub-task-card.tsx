@@ -1,6 +1,14 @@
 import { useCallback, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { Col, Flex, Typography, List, Dropdown, MenuProps, Popconfirm } from '@/shared/antd-imports';
+import {
+  Col,
+  Flex,
+  Typography,
+  List,
+  Dropdown,
+  MenuProps,
+  Popconfirm,
+} from '@/shared/antd-imports';
 import {
   UserAddOutlined,
   DeleteOutlined,
@@ -20,7 +28,7 @@ import {
   evt_project_task_list_context_menu_assign_me,
   evt_project_task_list_context_menu_delete,
   evt_project_task_list_context_menu_archive,
-} from '@/shared/worklenz-analytics-events';
+} from '@/shared/taskmate-analytics-events';
 import logger from '@/utils/errorLogger';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { deleteBoardTask, updateBoardTaskAssignee } from '@features/board/board-slice';

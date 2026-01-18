@@ -1,7 +1,7 @@
 import { Button, DatePicker, DatePickerProps, Flex, Select, Space } from '@/shared/antd-imports';
 import React, { useRef, useEffect } from 'react';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_schedule_page_visit } from '@/shared/worklenz-analytics-events';
+import { evt_schedule_page_visit } from '@/shared/taskmate-analytics-events';
 import { SettingOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { setDate, setType, toggleSettingsDrawer } from '@/features/schedule/scheduleSlice';

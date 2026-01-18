@@ -179,12 +179,12 @@ export const DEFAULT_PAGE_SIZE = 20;
 export const PAGE_SIZE_OPTIONS = ['5', '10', '15', '20', '50', '100'];
 export const ALPHA_CHANNEL = '69';
 
-export const FILTER_INDEX_KEY = 'worklenz.projects.filter_index';
-export const DISPLAY_MODE_KEY = 'worklenz.projects.display_as';
-export const WORKLENZ_REDIRECT_PROJ_KEY = 'worklenz.redirect_proj';
-export const PROJECT_SORT_FIELD = 'worklenz.projects.sort_field';
-export const PROJECT_SORT_ORDER = 'worklenz.projects.sort_order';
-export const PROJECT_LIST_COLUMNS = 'worklenz.reporting.projects.column_list';
+export const FILTER_INDEX_KEY = 'taskmate.projects.filter_index';
+export const DISPLAY_MODE_KEY = 'taskmate.projects.display_as';
+export const WORKLENZ_REDIRECT_PROJ_KEY = 'taskmate.redirect_proj';
+export const PROJECT_SORT_FIELD = 'taskmate.projects.sort_field';
+export const PROJECT_SORT_ORDER = 'taskmate.projects.sort_order';
+export const PROJECT_LIST_COLUMNS = 'taskmate.reporting.projects.column_list';
 
 export const PROJECT_STATUS_ICON_MAP = {
   'check-circle': CheckCircleOutlined,

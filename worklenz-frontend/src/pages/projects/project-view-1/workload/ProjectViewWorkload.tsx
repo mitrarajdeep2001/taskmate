@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMixpanelTracking } from '@/hooks/useMixpanelTracking';
-import { evt_project_workload_visit } from '@/shared/worklenz-analytics-events';
+import { evt_project_workload_visit } from '@/shared/taskmate-analytics-events';
 
 const ProjectViewWorkload = () => {
   const { trackMixpanelEvent } = useMixpanelTracking();

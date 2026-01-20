@@ -13,14 +13,14 @@ const rootUrl = `${API_BASE_URL}/attachments`;
 
 const taskAttachmentsApiService = {
   createTaskAttachment: async (
-    body: ITaskAttachment
+    body: FormData
   ): Promise<IServerResponse<ITaskAttachmentViewModel>> => {
     const response = await apiClient.post(`${rootUrl}/tasks`, body);
     return response.data;
   },
 
   createAvatarAttachment: async (
-    body: IAvatarAttachment
+    body: FormData
   ): Promise<IServerResponse<{ url: string }>> => {
     const response = await apiClient.post(`${rootUrl}/avatar`, body);
     return response.data;

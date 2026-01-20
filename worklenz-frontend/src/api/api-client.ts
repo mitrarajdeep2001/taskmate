@@ -57,25 +57,41 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor with performance optimization
 apiClient.interceptors.request.use(
   async config => {
     const requestStart = performance.now();
 
-    // Ensure we have a CSRF token before making requests
+    // 🔐 Ensure CSRF token exists
     if (!csrfToken) {
       const tokenStart = performance.now();
       await refreshCsrfToken();
       const tokenEnd = performance.now();
+
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('CSRF refresh time:', tokenEnd - tokenStart, 'ms');
+      }
     }
 
+    // 🔐 Attach CSRF token
     if (csrfToken) {
       config.headers['X-CSRF-Token'] = csrfToken;
     } else {
       console.warn('No CSRF token available after refresh attempt');
     }
 
+    // 📦 Auto-detect payload type
+    if (config.data instanceof FormData) {
+      // IMPORTANT: let browser set multipart boundary
+      delete config.headers['Content-Type'];
+    } else {
+      config.headers['Content-Type'] = 'application/json';
+    }
+
     const requestEnd = performance.now();
+
+    if (import.meta.env.VITE_APP_ENV === 'development') {
+      console.debug('Request prep time:', requestEnd - requestStart, 'ms');
+    }
 
     return config;
   },

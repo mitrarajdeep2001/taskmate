@@ -6,30 +6,44 @@ import { humanFileSize, smallId } from "../shared/utils";
 import { getStorageUrl } from "../shared/constants";
 import { ServerResponse } from "../models/server-response";
 import {
+  createCloudinaryPresignedUrl,
   createPresignedUrlWithClient,
+  deleteFileFromCloudinary,
   deleteObject,
   getAvatarKey,
   getKey,
   getRootDir,
   uploadBase64,
-  uploadBuffer
+  uploadBuffer,
+  uploadToCloudinary,
 } from "../shared/storage";
 import WorklenzControllerBase from "./worklenz-controller-base";
 import HandleExceptions from "../decorators/handle-exceptions";
 
 export default class AttachmentController extends WorklenzControllerBase {
-
   @HandleExceptions()
-  public static async createTaskAttachment(req: IWorkLenzRequest, res: IWorkLenzResponse): Promise<IWorkLenzResponse> {
-    const { file, file_name, task_id, project_id, size, type } = req.body;
+  public static async createTaskAttachment(
+    req: IWorkLenzRequest,
+    res: IWorkLenzResponse,
+  ): Promise<IWorkLenzResponse> {
+    const { buffer, file_name, task_id, project_id, size, type } = req.body;
 
-    const q = `
-      INSERT INTO task_attachments (name, task_id, team_id, project_id, uploaded_by, size, type)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING id, name, size, type, created_at, CONCAT($8::TEXT, '/', team_id, '/', project_id, '/', id, '.', type) AS url;
-    `;
+    // 1️⃣ Insert DB row first (without URL) to get ID
+    const insertQuery = `
+    INSERT INTO task_attachments (
+      name,
+      task_id,
+      team_id,
+      project_id,
+      uploaded_by,
+      size,
+      type
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    RETURNING id, name, size, type, created_at;
+  `;
 
-    const result = await db.query(q, [
+    const insertResult = await db.query(insertQuery, [
       file_name,
       task_id,
       req.user?.team_id,
@@ -37,60 +51,137 @@ export default class AttachmentController extends WorklenzControllerBase {
       req.user?.id,
       size,
       type,
-      `${getStorageUrl()}/${getRootDir()}`
     ]);
-    const [data] = result.rows;
 
-    const s3Url = await uploadBase64(file, getKey(req.user?.team_id as string, project_id, data.id, data.type));
+    const [data] = insertResult.rows;
 
-    if (!data?.id || !s3Url)
-      return res.status(200).send(new ServerResponse(false, null, "Attachment upload failed"));
+    if (!data?.id) {
+      return res
+        .status(200)
+        .send(new ServerResponse(false, null, "Attachment upload failed"));
+    }
 
-    data.size = humanFileSize(data.size);
+    // 2️⃣ Upload to Cloudinary using DB-generated ID
+    const uploadResult = await uploadToCloudinary(buffer as Buffer, {
+      folder: "task_mate/task_media",
+      publicId: `task_${data.id}`,
+    });
 
-    return res.status(200).send(new ServerResponse(true, data));
+    if (!uploadResult?.secure_url) {
+      return res
+        .status(200)
+        .send(new ServerResponse(false, null, "Attachment upload failed"));
+    }
+
+    // 3️⃣ Update DB row with Cloudinary URL
+    const updateQuery = `
+    UPDATE task_attachments
+    SET url = $2
+    WHERE id = $1
+    RETURNING url;
+  `;
+
+    const updateResult = await db.query(updateQuery, [
+      data.id,
+      uploadResult.secure_url,
+    ]);
+
+    if (!updateResult.rowCount) {
+      return res
+        .status(200)
+        .send(new ServerResponse(false, null, "Attachment upload failed"));
+    }
+
+    // 4️⃣ Respond
+    return res.status(200).send(
+      new ServerResponse(true, {
+        ...data,
+        url: uploadResult.secure_url,
+        size: humanFileSize(data.size),
+      }),
+    );
   }
 
   @HandleExceptions()
-  public static async createAvatarAttachment(req: IWorkLenzRequest, res: IWorkLenzResponse): Promise<IWorkLenzResponse> {
-    const { type, buffer } = req.body;
+  public static async createAvatarAttachment(
+    req: IWorkLenzRequest,
+    res: IWorkLenzResponse,
+  ): Promise<IWorkLenzResponse> {
+    const { buffer } = req.body;
 
-    const s3Url = await uploadBuffer(buffer as Buffer, type, getAvatarKey(req.user?.id as string, type));
+    if (!buffer) {
+      return res
+        .status(200)
+        .send(new ServerResponse(false, null, "Avatar upload failed"));
+    }
 
-    if (!s3Url)
-      return res.status(200).send(new ServerResponse(false, null, "Avatar upload failed"));
+    try {
+      const result = await uploadToCloudinary(buffer as Buffer, {
+        folder: "task_mate/avatars",
+        publicId: `avatar_${req.user?.id}`, // 👈 overwrite per user
+      });
 
-    const q = "UPDATE users SET avatar_url = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING avatar_url;";
-    const result = await db.query(q, [req.user?.id, `${s3Url}?v=${smallId(4)}`]);
-    const [data] = result.rows;
-    if (!data)
-      return res.status(200).send(new ServerResponse(false, null, "Avatar upload failed"));
+      const avatarUrl = `${result.secure_url}?v=${smallId(4)}`;
 
-    return res.status(200).send(new ServerResponse(true, { url: data.avatar_url }, "Avatar updated."));
-  }
-
-  @HandleExceptions()
-  public static async get(req: IWorkLenzRequest, res: IWorkLenzResponse): Promise<IWorkLenzResponse> {
-    const q = `
-      SELECT id,
-             name,
-             size,
-             CONCAT($2::TEXT, '/', team_id, '/', project_id, '/', id, '.', type) AS url,
-             type,
-             created_at
-      FROM task_attachments
-      WHERE task_id = $1;
+      const q = `
+      UPDATE users
+      SET avatar_url = $2, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+      RETURNING avatar_url;
     `;
-    const result = await db.query(q, [req.params.id, `${getStorageUrl()}/${getRootDir()}`]);
 
-    for (const item of result.rows)
+      const dbResult = await db.query(q, [req.user?.id, avatarUrl]);
+      const [data] = dbResult.rows;
+
+      if (!data) {
+        return res
+          .status(200)
+          .send(new ServerResponse(false, null, "Avatar upload failed"));
+      }
+
+      return res
+        .status(200)
+        .send(
+          new ServerResponse(true, { url: data.avatar_url }, "Avatar updated."),
+        );
+    } catch (error) {
+      return res
+        .status(200)
+        .send(new ServerResponse(false, null, "Avatar upload failed"));
+    }
+  }
+
+  @HandleExceptions()
+  public static async get(
+    req: IWorkLenzRequest,
+    res: IWorkLenzResponse,
+  ): Promise<IWorkLenzResponse> {
+    const q = `
+    SELECT
+      id,
+      name,
+      size,
+      url,
+      type,
+      created_at
+    FROM task_attachments
+    WHERE task_id = $1;
+  `;
+
+    const result = await db.query(q, [req.params.id]);
+
+    for (const item of result.rows) {
       item.size = humanFileSize(item.size);
+    }
 
     return res.status(200).send(new ServerResponse(true, result.rows));
   }
 
   @HandleExceptions()
-  public static async getByProjectId(req: IWorkLenzRequest, res: IWorkLenzResponse): Promise<IWorkLenzResponse> {
+  public static async getByProjectId(
+    req: IWorkLenzRequest,
+    res: IWorkLenzResponse,
+  ): Promise<IWorkLenzResponse> {
     const { size, offset } = this.toPaginationOptions(req.query, "name");
 
     const q = `
@@ -116,17 +207,32 @@ export default class AttachmentController extends WorklenzControllerBase {
                             LEFT JOIN tasks t ON task_attachments.task_id = t.id
                     WHERE task_attachments.project_id = $1) rec;
     `;
-    const result = await db.query(q, [req.params.id, `${getStorageUrl()}/${getRootDir()}`, size, offset]);
+    const result = await db.query(q, [
+      req.params.id,
+      `${getStorageUrl()}/${getRootDir()}`,
+      size,
+      offset,
+    ]);
     const [data] = result.rows;
 
     for (const item of data?.attachments.data || [])
       item.size = humanFileSize(item.size);
 
-    return res.status(200).send(new ServerResponse(true, data?.attachments || this.paginatedDatasetDefaultStruct));
+    return res
+      .status(200)
+      .send(
+        new ServerResponse(
+          true,
+          data?.attachments || this.paginatedDatasetDefaultStruct,
+        ),
+      );
   }
 
   @HandleExceptions()
-  public static async deleteById(req: IWorkLenzRequest, res: IWorkLenzResponse): Promise<IWorkLenzResponse> {
+  public static async deleteById(
+    req: IWorkLenzRequest,
+    res: IWorkLenzResponse,
+  ): Promise<IWorkLenzResponse> {
     const q = `DELETE
                FROM task_attachments
                WHERE id = $1
@@ -135,27 +241,39 @@ export default class AttachmentController extends WorklenzControllerBase {
     const [data] = result.rows;
 
     if (data) {
-      const key = getKey(data.team_id, data.project_id, data.id, data.type);
-      void deleteObject(key);
+      const key = `task_mate/task_media/task_${data.id}`;
+      await deleteFileFromCloudinary(key);
     }
 
     return res.status(200).send(new ServerResponse(true, result.rows));
   }
 
   @HandleExceptions()
-  public static async download(req: IWorkLenzRequest, res: IWorkLenzResponse): Promise<IWorkLenzResponse> {
-    const q = `SELECT team_id, project_id, id, type
-               FROM task_attachments
-               WHERE id = $1;`;
+  public static async download(
+    req: IWorkLenzRequest,
+    res: IWorkLenzResponse,
+  ): Promise<IWorkLenzResponse> {
+    const q = `
+    SELECT id, name FROM task_attachments WHERE id = $1;
+    `;
+
     const result = await db.query(q, [req.query.id]);
     const [data] = result.rows;
 
-    if (data) {
-      const key = getKey(data.team_id, data.project_id, data.id, data.type);
-      const url = await createPresignedUrlWithClient(key, req.query.file as string);
-      return res.status(200).send(new ServerResponse(true, url));
+    if (!data) {
+      return res
+        .status(200)
+        .send(new ServerResponse(false, null, "File not found"));
     }
 
-    return res.status(200).send(new ServerResponse(true, null));
+    const key = `task_mate/task_media/task_${data.id}`;
+    // ⏳ Signed URL (expires in 5 minutes)
+    const downloadUrl = await createCloudinaryPresignedUrl(key, data.name);
+    return res.status(200).send(
+      new ServerResponse(true, {
+        url: downloadUrl,
+        fileName: data.name,
+      }),
+    );
   }
 }

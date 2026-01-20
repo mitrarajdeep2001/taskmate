@@ -16,7 +16,7 @@ export interface ITaskStatusCategory {
 }
 
 export interface IProjectTask {
-  manual_progress: any;
+  manual_progress?: any;
   due_time?: string;
   id?: string;
   name?: string;

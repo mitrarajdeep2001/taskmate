@@ -32,12 +32,14 @@ import {
   S3_URL,
   STORAGE_PROVIDER,
 } from "./constants";
+import { UploadApiResponse } from "cloudinary";
+import cloudinary from "../config/cloudinary";
 
 // Parse the endpoint URL from S3_URL if it exists
 const getEndpointFromUrl = () => {
   try {
     if (!S3_URL) return undefined;
-    
+
     // Extract the endpoint URL (e.g., http://minio:9000 from http://minio:9000/bucket)
     const url = new URL(S3_URL);
     return `${url.protocol}//${url.host}`;
@@ -74,18 +76,21 @@ if (STORAGE_PROVIDER === "azure") {
     } else {
       const sharedKeyCredential = new StorageSharedKeyCredential(
         AZURE_STORAGE_ACCOUNT_NAME,
-        AZURE_STORAGE_ACCOUNT_KEY
+        AZURE_STORAGE_ACCOUNT_KEY,
       );
-      
+
       azureBlobServiceClient = new BlobServiceClient(
         `https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net`,
-        sharedKeyCredential
+        sharedKeyCredential,
       );
-      
+
       const containerName = AZURE_STORAGE_CONTAINER || "ifinitycdn";
-      azureContainerClient = azureBlobServiceClient.getContainerClient(containerName);
-      
-      console.log(`Azure Blob Storage initialized with account: ${AZURE_STORAGE_ACCOUNT_NAME}, container: ${containerName}`);
+      azureContainerClient =
+        azureBlobServiceClient.getContainerClient(containerName);
+
+      console.log(
+        `Azure Blob Storage initialized with account: ${AZURE_STORAGE_ACCOUNT_NAME}, container: ${containerName}`,
+      );
     }
   } catch (error) {
     console.error("Failed to initialize Azure Blob Storage:", error);
@@ -98,16 +103,9 @@ export function getRootDir() {
   return "local-server";
 }
 
-export function getKey(
-  teamId: string,
-  projectId: string,
-  attachmentId: string,
-  type: string
-) {
-  const keyPath = path
-    .join(getRootDir(), teamId, projectId, `${attachmentId}.${type}`)
-    .replace(/\\/g, "/");
-  
+export function getKey(attachmentId: string) {
+  const keyPath = `task_${attachmentId}`;
+
   return keyPath;
 }
 
@@ -117,7 +115,7 @@ export function getTaskAttachmentKey(
   taskId: string,
   commentId: string,
   attachmentId: string,
-  type: string
+  type: string,
 ) {
   const keyPath = path
     .join(
@@ -126,10 +124,10 @@ export function getTaskAttachmentKey(
       projectId,
       taskId,
       commentId,
-      `${attachmentId}.${type}`
+      `${attachmentId}.${type}`,
     )
     .replace(/\\/g, "/");
-  
+
   return keyPath;
 }
 
@@ -137,14 +135,14 @@ export function getAvatarKey(userId: string, type: string) {
   const keyPath = path
     .join("avatars", getRootDir(), `${userId}.${type}`)
     .replace(/\\/g, "/");
-  
+
   return keyPath;
 }
 
 async function uploadBufferToS3(
   buffer: Buffer,
   type: string,
-  location: string
+  location: string,
 ): Promise<string | null> {
   try {
     const bucketParams: PutObjectCommandInput = {
@@ -156,14 +154,14 @@ async function uploadBufferToS3(
     };
 
     await s3Client.send(new PutObjectCommand(bucketParams));
-    
+
     // Create proper URL depending on whether we're using S3 or MinIO
     const endpointUrl = getEndpointFromUrl();
     if (endpointUrl) {
       // For MinIO or custom S3 endpoint
       return `${endpointUrl}/${BUCKET}/${location}`;
     }
-    
+
     // For standard AWS S3
     return `${S3_URL}/${location}`;
   } catch (error) {
@@ -175,7 +173,7 @@ async function uploadBufferToS3(
 async function uploadBufferToAzure(
   buffer: Buffer,
   type: string,
-  location: string
+  location: string,
 ): Promise<string | null> {
   try {
     if (!azureContainerClient) {
@@ -202,7 +200,7 @@ async function uploadBufferToAzure(
 export async function uploadBuffer(
   buffer: Buffer,
   type: string,
-  location: string
+  location: string,
 ): Promise<string | null> {
   if (STORAGE_PROVIDER === "azure") {
     return uploadBufferToAzure(buffer, type, location);
@@ -214,7 +212,7 @@ export async function uploadBase64(base64Data: string, location: string) {
   try {
     const buffer = Buffer.from(
       base64Data.replace(/^data:(.*?);base64,/, ""),
-      "base64"
+      "base64",
     );
     const type = base64Data.split(";")[0].split(":")[1] || null;
 
@@ -349,7 +347,7 @@ async function createPresignedUrlWithAzureClient(key: string, file: string) {
     // Create a SAS token that's valid for one hour
     const sharedKeyCredential = new StorageSharedKeyCredential(
       AZURE_STORAGE_ACCOUNT_NAME,
-      AZURE_STORAGE_ACCOUNT_KEY
+      AZURE_STORAGE_ACCOUNT_KEY,
     );
 
     const fileExtension = path.extname(key).toLowerCase();
@@ -368,7 +366,7 @@ async function createPresignedUrlWithAzureClient(key: string, file: string) {
 
     const sasToken = generateBlobSASQueryParameters(
       sasOptions,
-      sharedKeyCredential
+      sharedKeyCredential,
     ).toString();
 
     // Generate URL with container name in the path
@@ -384,4 +382,68 @@ export async function createPresignedUrlWithClient(key: string, file: string) {
     return createPresignedUrlWithAzureClient(key, file);
   }
   return createPresignedUrlWithS3Client(key, file);
+}
+
+/**
+ * CLOUDINARY STORAGE
+ */
+export function uploadToCloudinary(
+  buffer: Buffer,
+  options: {
+    folder: string;
+    publicId: string;
+  },
+): Promise<UploadApiResponse> {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: options.folder,
+        public_id: options.publicId,
+        resource_type: "image",
+        overwrite: true,
+      },
+      (error, result) => {
+        if (error || !result) return reject(error);
+        resolve(result);
+      },
+    );
+
+    stream.end(buffer);
+  });
+}
+
+export async function deleteFileFromCloudinary(
+  publicId: string,
+): Promise<boolean> {
+  try {
+    console.log(publicId);
+
+    await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image",
+      invalidate: true, // 👈 important for CDN cache
+    });
+
+    return true;
+  } catch (error) {
+    // log but don't fail API
+    log_error(error);
+    return false;
+  }
+}
+
+export async function createCloudinaryPresignedUrl(
+  publicId: string,
+  fileName: string,
+): Promise<string> {
+  // ⏳ Signed URL (expires in 5 minutes)
+  const downloadUrl = cloudinary.url(publicId, {
+    resource_type: "image",
+    secure: true,
+    sign_url: true,
+    expires_at: Math.floor(Date.now() / 1000) + 300,
+    flags: "attachment", // 👈 forces download
+    content_disposition: `attachment; filename=${fileName}`,
+  });
+
+  return downloadUrl;
 }

@@ -7,14 +7,41 @@ import avatarValidator from "../../middlewares/validators/avatar-validator";
 import idParamValidator from "../../middlewares/validators/id-param-validator";
 import taskAttachmentsValidator from "../../middlewares/validators/task-attachments-validator";
 import safeControllerFunction from "../../shared/safe-controller-function";
+import { avatarUpload, taskUpload } from "../../shared/multer";
 
 const attachmentsApiRouter = express.Router();
 
-attachmentsApiRouter.post("/tasks", taskAttachmentsValidator, safeControllerFunction(AttachmentController.createTaskAttachment));
-attachmentsApiRouter.post("/avatar", avatarValidator, safeControllerFunction(imageToWebp), safeControllerFunction(AttachmentController.createAvatarAttachment));
-attachmentsApiRouter.get("/tasks/:id", idParamValidator, safeControllerFunction(AttachmentController.get));
-attachmentsApiRouter.get("/download", safeControllerFunction(AttachmentController.download));
-attachmentsApiRouter.get("/project/:id", idParamValidator, safeControllerFunction(AttachmentController.getByProjectId));
-attachmentsApiRouter.delete("/tasks/:id", idParamValidator, safeControllerFunction(AttachmentController.deleteById));
+attachmentsApiRouter.post(
+  "/tasks",
+  taskUpload.single("file"),
+  taskAttachmentsValidator,
+  safeControllerFunction(AttachmentController.createTaskAttachment),
+);
+attachmentsApiRouter.post(
+  "/avatar",
+  avatarUpload.single("avatar"),
+  avatarValidator,
+  safeControllerFunction(imageToWebp),
+  safeControllerFunction(AttachmentController.createAvatarAttachment),
+);
+attachmentsApiRouter.get(
+  "/tasks/:id",
+  idParamValidator,
+  safeControllerFunction(AttachmentController.get),
+);
+attachmentsApiRouter.get(
+  "/download",
+  safeControllerFunction(AttachmentController.download),
+);
+attachmentsApiRouter.get(
+  "/project/:id",
+  idParamValidator,
+  safeControllerFunction(AttachmentController.getByProjectId),
+);
+attachmentsApiRouter.delete(
+  "/tasks/:id",
+  idParamValidator,
+  safeControllerFunction(AttachmentController.deleteById),
+);
 
 export default attachmentsApiRouter;

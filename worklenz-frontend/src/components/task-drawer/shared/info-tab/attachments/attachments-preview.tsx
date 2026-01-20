@@ -69,7 +69,8 @@ const AttachmentsPreview = ({
 
       if (res && res.done) {
         const link = document.createElement('a');
-        link.href = res.body || '';
+        link.href = res.body?.url || '';
+        
         link.download = name;
         link.click();
         link.remove();

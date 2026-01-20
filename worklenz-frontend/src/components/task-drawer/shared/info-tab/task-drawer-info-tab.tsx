@@ -1,4 +1,12 @@
-import { Button, Collapse, CollapseProps, Flex, Skeleton, Tooltip, Typography } from '@/shared/antd-imports';
+import {
+  Button,
+  Collapse,
+  CollapseProps,
+  Flex,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from '@/shared/antd-imports';
 import React, { useEffect, useState, useRef } from 'react';
 import { ReloadOutlined } from '@/shared/antd-imports';
 import DescriptionEditor from './description-editor';
@@ -15,7 +23,7 @@ import { ISubTask } from '@/types/tasks/subTask.types';
 import { ITaskDependency } from '@/types/tasks/task-dependency.types';
 import { taskDependenciesApiService } from '@/api/tasks/task-dependencies.api.service';
 import logger from '@/utils/errorLogger';
-import { getBase64 } from '@/utils/file-utils';
+import { getBase64, getFormData } from '@/utils/file-utils';
 import {
   ITaskAttachment,
   ITaskAttachmentViewModel,
@@ -67,14 +75,15 @@ const TaskDrawerInfoTab = ({ t }: TaskDrawerInfoTabProps) => {
         await Promise.all(
           filesToUpload.map(async file => {
             const base64 = await getBase64(file);
-            const body: ITaskAttachment = {
-              file: base64 as string,
+            const body = {
+              file,
               file_name: file.name,
               task_id: taskFormViewModel?.task?.id || '',
               project_id: projectId,
               size: file.size,
             };
-            await taskAttachmentsApiService.createTaskAttachment(body);
+            const formData = getFormData(body);
+            await taskAttachmentsApiService.createTaskAttachment(formData);
           })
         );
       } finally {
@@ -150,7 +159,7 @@ const TaskDrawerInfoTab = ({ t }: TaskDrawerInfoTabProps) => {
       label: <Typography.Text strong>{t('taskInfoTab.dependencies.title')}</Typography.Text>,
       children: (
         <DependenciesTable
-          task={(taskFormViewModel?.task as ITaskViewModel) || {} as ITaskViewModel}
+          task={(taskFormViewModel?.task as ITaskViewModel) || ({} as ITaskViewModel)}
           t={t}
           taskDependencies={taskDependencies}
           loadingTaskDependencies={loadingTaskDependencies}
@@ -216,14 +225,16 @@ const TaskDrawerInfoTab = ({ t }: TaskDrawerInfoTabProps) => {
       const res = await taskDependenciesApiService.getTaskDependencies(selectedTaskId);
       if (res.done) {
         setTaskDependencies(res.body);
-        
+
         // Update Redux state with the current dependency status
-        dispatch(updateTaskCounts({
-          taskId: selectedTaskId,
-          counts: {
-            has_dependencies: res.body.length > 0
-          }
-        }));
+        dispatch(
+          updateTaskCounts({
+            taskId: selectedTaskId,
+            counts: {
+              has_dependencies: res.body.length > 0,
+            },
+          })
+        );
       }
     } catch (error) {
       logger.error('Error fetching task dependencies:', error);
@@ -239,14 +250,16 @@ const TaskDrawerInfoTab = ({ t }: TaskDrawerInfoTabProps) => {
       const res = await taskAttachmentsApiService.getTaskAttachments(selectedTaskId);
       if (res.done) {
         setTaskAttachments(res.body);
-        
+
         // Update Redux state with the current attachment count
-        dispatch(updateTaskCounts({
-          taskId: selectedTaskId,
-          counts: {
-            attachments_count: res.body.length
-          }
-        }));
+        dispatch(
+          updateTaskCounts({
+            taskId: selectedTaskId,
+            counts: {
+              attachments_count: res.body.length,
+            },
+          })
+        );
       }
     } catch (error) {
       logger.error('Error fetching task attachments:', error);

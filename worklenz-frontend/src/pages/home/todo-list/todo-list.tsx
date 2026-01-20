@@ -26,6 +26,7 @@ import {
   useMarkPersonalTaskAsDoneMutation,
 } from '@/api/home-page/home-page.api.service';
 import { useCreatePersonalTaskMutation } from '@/api/home-page/home-page.api.service';
+import emptyBoxImg from '@/assets/images/empty-box.webp'
 
 const TodoList = () => {
   const [isAlertShowing, setIsAlertShowing] = useState(false);
@@ -191,7 +192,7 @@ const TodoList = () => {
                 <div style={{ maxHeight: 300, overflow: 'auto' }}>
                   {data?.body.length === 0 ? (
                     <EmptyListPlaceholder
-                      imageSrc="https://s3.us-west-2.amazonaws.com/taskmate.com/assets/empty-box.webp"
+                      imageSrc={emptyBoxImg}
                       text={t('home:todoList.noTasks')}
                     />
                   ) : (

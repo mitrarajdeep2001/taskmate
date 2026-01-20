@@ -39,6 +39,7 @@ import { fetchLabels } from '@/features/taskAttributes/taskLabelSlice';
 import { fetchPriorities } from '@/features/taskAttributes/taskPrioritySlice';
 import { setProjectId } from '@/features/project/project.slice';
 import { getTeamMembers } from '@/features/team-members/team-members.slice';
+import emptyBoxImg from '@/assets/images/empty-box.webp'
 
 const TasksList: React.FC = React.memo(() => {
   const dispatch = useAppDispatch();
@@ -267,7 +268,7 @@ const TasksList: React.FC = React.memo(() => {
         <Skeleton active />
       ) : data?.body.total === 0 ? (
         <EmptyListPlaceholder
-          imageSrc="https://s3.us-west-2.amazonaws.com/taskmate.com/assets/empty-box.webp"
+          imageSrc={emptyBoxImg}
           text=" No tasks to show."
         />
       ) : (

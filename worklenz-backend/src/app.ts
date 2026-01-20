@@ -22,6 +22,7 @@ import sessionMiddleware from "./middlewares/session-middleware";
 import safeControllerFunction from "./shared/safe-controller-function";
 import AwsSesController from "./controllers/aws-ses-controller";
 import { CSP_POLICIES } from "./shared/csp";
+import multer from "multer";
 
 const app = express();
 
@@ -41,7 +42,7 @@ app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
-  })
+  }),
 );
 
 // Custom security headers
@@ -94,7 +95,7 @@ app.use(
       "X-CSRF-Token",
     ],
     exposedHeaders: ["Set-Cookie", "X-CSRF-Token"],
-  })
+  }),
 );
 
 // Handle preflight requests
@@ -164,15 +165,15 @@ app.get("/csrf-token", (req: Request, res: Response) => {
 // Webhook endpoints (no CSRF required)
 app.post(
   "/webhook/emails/bounce",
-  safeControllerFunction(AwsSesController.handleBounceResponse)
+  safeControllerFunction(AwsSesController.handleBounceResponse),
 );
 app.post(
   "/webhook/emails/complaints",
-  safeControllerFunction(AwsSesController.handleComplaintResponse)
+  safeControllerFunction(AwsSesController.handleComplaintResponse),
 );
 app.post(
   "/webhook/emails/reply",
-  safeControllerFunction(AwsSesController.handleReplies)
+  safeControllerFunction(AwsSesController.handleReplies),
 );
 
 // Static file serving
@@ -181,7 +182,7 @@ if (isProduction()) {
     express.static(path.join(__dirname, "build"), {
       maxAge: "1y",
       etag: false,
-    })
+    }),
   );
 
   // Handle compressed files
@@ -234,22 +235,41 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 app.get("*", (req: Request, res: Response, next: NextFunction) => {
   if (req.path.startsWith("/api/")) return next();
   res.sendFile(
-    path.join(__dirname, isProduction() ? "build" : "public", "index.html")
+    path.join(__dirname, isProduction() ? "build" : "public", "index.html"),
   );
 });
 
 // Global error handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  const status = err.status || 500;
+  // If headers already sent, delegate to default handler
+  if (res.headersSent) return;
 
-  if (res.headersSent) {
-    return;
+  /**
+   * Handle Multer file size errors
+   */
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(200).json({
+        done: false,
+        message: "File too large",
+        body: null,
+      });
+    }
+
+    // Other Multer errors (optional)
+    return res.status(200).json({
+      done: false,
+      message: err.message || "File upload failed",
+      body: null,
+    });
   }
 
-  res.status(status);
+  /**
+   * Default error handling
+   */
+  const status = err.status || 500;
 
-  // Send structured error response
-  res.json({
+  res.status(status).json({
     done: false,
     message: isProduction() ? "Internal Server Error" : err.message,
     body: null,

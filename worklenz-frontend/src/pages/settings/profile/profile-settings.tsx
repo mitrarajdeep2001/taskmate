@@ -22,7 +22,7 @@ import {
   evt_settings_profile_picture_update,
 } from '@/shared/taskmate-analytics-events';
 import { useAuthService } from '@/hooks/useAuth';
-import { getBase64 } from '@/utils/file-utils';
+import { getBase64, getFormData } from '@/utils/file-utils';
 
 import './profile-settings.css';
 import { profileSettingsApiService } from '@/api/settings/profile/profile-settings.api.service';
@@ -58,12 +58,10 @@ const ProfileSettings = () => {
     setUploading(true);
 
     try {
-      const base64 = await getBase64(file);
-      const res = await taskAttachmentsApiService.createAvatarAttachment({
-        file: base64 as string,
-        file_name: file.name,
-        size: file.size,
+      const formData = getFormData({
+        avatar: file, // File
       });
+      const res = await taskAttachmentsApiService.createAvatarAttachment(formData);
       if (res.done) {
         trackMixpanelEvent(evt_settings_profile_picture_update);
         const authorizeResponse = await authApiService.verify();
@@ -73,7 +71,7 @@ const ProfileSettings = () => {
         }
       }
     } catch (e) {
-      logger.error('Error uploading avatar', e);
+      logger.error('Error uploading avatar', e);  
     } finally {
       setUploading(false);
     }
@@ -125,10 +123,18 @@ const ProfileSettings = () => {
         <img
           src={imageUrl || currentSession?.avatar_url}
           alt="avatar"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '50%' }}
+          className='bg-blue-300'
         />
       ) : (
-        <Flex align="center" justify="center" vertical gap={8} style={{ height: '100%' }}>
+        <Flex
+          align="center"
+          justify="center"
+          vertical
+          gap={8}
+          className="rounded-full border-2 border-dashed"
+          style={{ height: '100%' }}
+        >
           <PlusOutlined />
           <Typography.Text>{t('upload')}</Typography.Text>
         </Flex>

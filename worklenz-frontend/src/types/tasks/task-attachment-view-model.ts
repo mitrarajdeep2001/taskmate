@@ -16,7 +16,7 @@ export interface IProjectAttachmentsViewModel {
 }
 
 export interface ITaskAttachment {
-  file: string;
+  file: File;
   file_name: string;
   project_id: string;
   size: number;

@@ -76,7 +76,7 @@ api.use("/personal-overview", personalOverviewApiRouter);
 api.use("/statuses", statusesApiRouter);
 api.use("/todo-list", todoListApiRouter);
 api.use("/notifications", notificationsApiRouter);
-api.use("/attachments", attachmentsApiRouter);
+api.use("/attachments", (attachmentsApiRouter));
 api.use("/sub-tasks", subTasksApiRouter);
 api.use("/project-members", projectMembersApiRouter);
 api.use("/task-time-log", taskWorkLogApiRouter);

@@ -30,9 +30,10 @@ import taskAttachmentsApiService from '@/api/tasks/task-attachments.api.service'
 import logger from '@/utils/errorLogger';
 import { setSession } from '@/utils/session-helper';
 import { authApiService } from '@/api/auth/auth.api.service';
+import { fromNow } from '@/utils/dateUtils';
 
 const ProfileSettings = () => {
-  const { t } = useTranslation('settings/profile');
+  const { t, i18n } = useTranslation('settings/profile');
   const dispatch = useAppDispatch();
   const { trackMixpanelEvent } = useMixpanelTracking();
 
@@ -71,7 +72,7 @@ const ProfileSettings = () => {
         }
       }
     } catch (e) {
-      logger.error('Error uploading avatar', e);  
+      logger.error('Error uploading avatar', e);
     } finally {
       setUploading(false);
     }
@@ -124,7 +125,7 @@ const ProfileSettings = () => {
           src={imageUrl || currentSession?.avatar_url}
           alt="avatar"
           style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '50%' }}
-          className='bg-blue-300'
+          className="bg-blue-300"
         />
       ) : (
         <Flex
@@ -166,6 +167,7 @@ const ProfileSettings = () => {
       setUpdating(false);
     }
   };
+  console.log(currentSession?.joined_date, currentSession?.last_updated, 'currentSession');
 
   return (
     <Card style={{ width: '100%' }}>
@@ -237,15 +239,16 @@ const ProfileSettings = () => {
       <Flex vertical gap={4} style={{ marginTop: 16 }}>
         <Typography.Text type="secondary" style={{ fontSize: 12 }}>
           {t('profileJoinedText', {
-            date: currentSession?.created_at
-              ? new Date(currentSession.created_at).toLocaleDateString()
+            time: currentSession?.joined_date
+              ? fromNow(currentSession.joined_date, i18n.language)
               : '',
           })}
         </Typography.Text>
+
         <Typography.Text type="secondary" style={{ fontSize: 12 }}>
           {t('profileLastUpdatedText', {
-            date: currentSession?.updated_at
-              ? new Date(currentSession.updated_at).toLocaleDateString()
+            time: currentSession?.last_updated
+              ? fromNow(currentSession.last_updated, i18n.language)
               : '',
           })}
         </Typography.Text>

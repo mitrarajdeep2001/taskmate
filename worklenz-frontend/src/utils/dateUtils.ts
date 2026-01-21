@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import 'dayjs/locale/en';
 import 'dayjs/locale/de';
 import 'dayjs/locale/es';
 import 'dayjs/locale/pt';
